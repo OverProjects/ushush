@@ -30,7 +30,11 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="../../libe/SFML-2.5.1/include" />
 		</Compiler>
+		<Linker>
+			<Add directory="../../libe/SFML-2.5.1/lib" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

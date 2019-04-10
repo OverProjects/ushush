@@ -1,9 +1,14 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "class/Display.hpp"
+
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    Display didi;
+    didi.init("GFX/boy.jpg");
+
+    sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
@@ -12,6 +17,7 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
+
             if (event.type == sf::Event::Closed)
                 window.close();
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -19,9 +25,11 @@ int main()
                 window.close();
                 //shape.setFillColor(sf::Color::Red);
             }
+
         }
 
         window.clear();
+        didi.show(window);
         window.draw(shape);
         window.display();
     }
