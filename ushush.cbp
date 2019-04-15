@@ -31,6 +31,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="class/Display.cpp" />
+		<Unit filename="class/Display.hpp" />
+		<Unit filename="class/Move.cpp" />
+		<Unit filename="class/Move.hpp" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

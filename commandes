@@ -1,8 +1,8 @@
 Premier truc que je comprends pas :
-g++ -c main.cpp class/Display.cpp
+g++ -c main.cpp class/Display.cpp class/Move.cpp
 
 Deuxième truc que je comprends pas (ou un peu) :
-g++ obj/main.o obj/class/Display.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+g++ main.o Display.o Move.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
 
 Troisième truc aps trop compliqué :
 ./sfml-app

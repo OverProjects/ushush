@@ -9,8 +9,17 @@ private:
 
     sf::Vector2i m_size;
 
+    sf::Clock m_clo;
+    sf::Time m_tim;
+
+    int m_timInt;
+
+    sf::Font m_fon;
+    sf::Text m_tex;
+
 public :
     bool init(std::string);
+    void update();
     void show(sf::RenderWindow&);
 
     sf::Vector2i getSize() {return m_size;}

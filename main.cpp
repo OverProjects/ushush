@@ -1,7 +1,9 @@
 #include <iostream>
+#include <string>
 #include <SFML/Graphics.hpp>
 
 #include "class/Display.hpp"
+#include "class/Move.hpp"
 
 int main()
 {
@@ -9,9 +11,15 @@ int main()
     didi.init("GFX/back/bg1");
 
     sf::RenderWindow window(sf::VideoMode(didi.getSize().x, didi.getSize().y),
-                            "SFML works!");
+                            "Le debut du commencement");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
+
+    sf::Clock cloFPS;
+    sf::Time timFPS;
+
+    Mov boy;
+    boy.init("GFX/boy.jpg");
 
     while (window.isOpen())
     {
@@ -30,9 +38,14 @@ int main()
         }
 
         window.clear();
+        didi.update();
         didi.show(window);
-        window.draw(shape);
+        //window.draw(shape);
         window.display();
+
+        while(timFPS.asMilliseconds() < (250))
+            {timFPS = cloFPS.getElapsedTime();}
+        cloFPS.restart();
     }
 
     return 0;
