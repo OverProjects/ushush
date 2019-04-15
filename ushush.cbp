@@ -35,6 +35,8 @@
 		<Linker>
 			<Add directory="../../libe/SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="class/Display.cpp" />
+		<Unit filename="class/Display.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

@@ -8,7 +8,8 @@ int main()
     Display didi;
     didi.init("GFX/boy.jpg");
 
-    sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(didi.getSize().x, didi.getSize().y),
+                            "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
