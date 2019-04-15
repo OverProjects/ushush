@@ -6,7 +6,7 @@
 int main()
 {
     Display didi;
-    didi.init("GFX/boy.jpg");
+    didi.init("GFX/back/bg1");
 
     sf::RenderWindow window(sf::VideoMode(didi.getSize().x, didi.getSize().y),
                             "SFML works!");
