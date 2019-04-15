@@ -1,0 +1,9 @@
+Premier truc que je comprends pas :
+g++ -c main.cpp class/Display.cpp
+
+Deuxième truc que je comprends pas (ou un peu) :
+g++ obj/main.o obj/class/Display.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+
+Troisième truc aps trop compliqué :
+./sfml-app
+
