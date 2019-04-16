@@ -16,22 +16,26 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(didi.getSize().x, didi.getSize().y),
                             "Le debut du commencement");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    int nbshape{500};
+    sf::CircleShape shape[nbshape];
+    sf::Vector2i sPos;
 
     sf::Clock cloFPS;
     sf::Time timFPS;
+
+    Display diFPS;
+    diFPS.init(std::to_string(timFPS.asMilliseconds()), 1);
+    diFPS.setTPosition(window.getSize().x - 100, 0);
 
     sf::Image icon;
     if (!icon.loadFromFile("GFX/icone.png")) {std::cerr << "No load for icone.png" << std::endl;}
     window.setIcon(225,225,icon.getPixelsPtr());
 
-    Mov boy[5];
-
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < nbshape; i++)
     {
-        boy[i].init("GFX/renard.jpg");
-        boy[i].setPosition(rdd.genRand(0, 500), rdd.genRand(0,500));
+        shape[i].setFillColor(sf::Color::White);
+        shape[i].setRadius(1);
+        shape[i].setPosition(rdd.genRand(0, window.getSize().x), rdd.genRand(0, window.getSize().y));
     }
 
 
@@ -52,18 +56,33 @@ int main()
         }
 
         window.clear();
-        didi.update();
-        didi.show(window);
 
-        for (int i = 0; i < 5; i++)
+        didi.update();
+
+        didi.show(window);
+        diFPS.show(window);
+
+        for (int i = 0; i < nbshape; i++)
         {
-            boy[i].show(window);
+            sPos.x = shape[i].getPosition().x - rdd.genRand(0, 1) + rdd.genRand(0, 1);
+            sPos.y = shape[i].getPosition().y - rdd.genRand(0 ,1) + rdd.genRand(0, 1);
+
+            if (sPos.x > window.getSize().x) {sPos.x = window.getSize().x;}
+            else if (sPos.x < 0) {sPos.x = 0;}
+            if (sPos.y > window.getSize().y) {sPos.y = window.getSize().y;}
+            else if (sPos.y < 0) {sPos.y = 0;}
+
+            shape[i].setPosition(sPos.x, sPos.y);
+            window.draw(shape[i]);
         }
-        //window.draw(shape);
         window.display();
 
-        while(timFPS.asMilliseconds() < (250))
+        timFPS = cloFPS.getElapsedTime();
+        while(timFPS.asMilliseconds() < 50)
             {timFPS = cloFPS.getElapsedTime();}
+        if (timFPS.asMilliseconds() > 100) {std::cout << "oula" << std::endl;}
+        diFPS.update(std::to_string(timFPS.asMilliseconds()));
+
         cloFPS.restart();
     }
 

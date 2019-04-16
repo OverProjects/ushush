@@ -29,6 +29,19 @@ bool Display::init(std::string path)
     return true;
 }
 
+bool Display::init(std::string str, bool texte)
+{
+    if (!m_fon.loadFromFile("GFX/font/arial.ttf"))
+        {std::cerr << "Can't load Arial" << std::endl;}
+    else
+    {
+        m_tex.setFont(m_fon);
+        m_tex.setString("manger");
+        m_tex.setCharacterSize(24);
+        m_tex.setFillColor(sf::Color::Red);
+    }
+}
+
 void Display::update()
 {
     m_tim = m_clo.getElapsedTime();
