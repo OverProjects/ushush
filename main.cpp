@@ -4,9 +4,13 @@
 
 #include "class/Display.hpp"
 #include "class/Move.hpp"
+#include "class/Input.hpp"
+#include "class/Random.hpp"
 
 int main()
 {
+    Randoma rdd;
+
     Display didi;
     didi.init("GFX/back/bg1");
 
@@ -18,8 +22,18 @@ int main()
     sf::Clock cloFPS;
     sf::Time timFPS;
 
-    Mov boy;
-    boy.init("GFX/boy.jpg");
+    sf::Image icon;
+    if (!icon.loadFromFile("GFX/icone.png")) {std::cerr << "No load for icone.png" << std::endl;}
+    window.setIcon(225,225,icon.getPixelsPtr());
+
+    Mov boy[5];
+
+    for (int i = 0; i < 5; i++)
+    {
+        boy[i].init("GFX/renard.jpg");
+        boy[i].setPosition(rdd.genRand(0, 500), rdd.genRand(0,500));
+    }
+
 
     while (window.isOpen())
     {
@@ -40,6 +54,11 @@ int main()
         window.clear();
         didi.update();
         didi.show(window);
+
+        for (int i = 0; i < 5; i++)
+        {
+            boy[i].show(window);
+        }
         //window.draw(shape);
         window.display();
 

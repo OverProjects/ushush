@@ -33,6 +33,8 @@
 		</Compiler>
 		<Unit filename="class/Display.cpp" />
 		<Unit filename="class/Display.hpp" />
+		<Unit filename="class/Input.cpp" />
+		<Unit filename="class/Input.hpp" />
 		<Unit filename="class/Move.cpp" />
 		<Unit filename="class/Move.hpp" />
 		<Unit filename="main.cpp" />

@@ -22,6 +22,8 @@ public :
     void update();
     void show(sf::RenderWindow&);
 
+    void setPosition(int x, int y) {m_sprite.setPosition(x, y);}
+
     sf::Vector2i getSize() {return m_size;}
 };
 
