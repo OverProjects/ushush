@@ -3,10 +3,18 @@
 
 #include "Display.hpp"
 
+
+enum{DROITE, GAUCHE, HAUT, BAS};
+
 class Mov : public Display
 {
+protected :
+    int m_direction;
+    sf::Vector2i m_screenSize;
+
 public :
-    void update();
+    Mov(sf::RenderWindow& window);
+    void update(std::string str);
 };
 
 #endif // DEF_MOV

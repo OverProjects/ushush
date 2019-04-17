@@ -9,6 +9,7 @@
 
 int main()
 {
+// INITIALISATION
     Randoma rdd;
 
     Display didi;
@@ -16,7 +17,7 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(didi.getSize().x, didi.getSize().y),
                             "Le debut du commencement");
-    int nbshape{500};
+    int nbshape{250};
     sf::CircleShape shape[nbshape];
     sf::Vector2i sPos;
 
@@ -31,13 +32,23 @@ int main()
     if (!icon.loadFromFile("GFX/icone.png")) {std::cerr << "No load for icone.png" << std::endl;}
     window.setIcon(225,225,icon.getPixelsPtr());
 
+    //test
+    Mov perso(window);
+    perso.init("GFX/renard.jpg");
+    perso.setSpriteScale(0.5,0.5);
+    perso.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+    //end test
+
     for (int i = 0; i < nbshape; i++)
     {
         shape[i].setFillColor(sf::Color::White);
         shape[i].setRadius(1);
         shape[i].setPosition(rdd.genRand(0, window.getSize().x), rdd.genRand(0, window.getSize().y));
+        //shape[i].setPosition(window.getSize().x / 2, window.getSize().y / 2);
     }
-
+// END INITIALISATION
+/////////////////////////////////////////////////////////////////////////////////////////////
+// BOUCLE PRINCIPALE
 
     while (window.isOpen())
     {
@@ -50,7 +61,6 @@ int main()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
                 window.close();
-                //shape.setFillColor(sf::Color::Red);
             }
 
         }
@@ -58,9 +68,13 @@ int main()
         window.clear();
 
         didi.update();
+        //TEST
+        perso.update("ligne");
+        //end test
 
-        didi.show(window);
-        diFPS.show(window);
+        didi.show(window, 1);
+        perso.show(window, 0);
+        diFPS.show(window, 1);
 
         for (int i = 0; i < nbshape; i++)
         {
@@ -84,6 +98,8 @@ int main()
         diFPS.update(std::to_string(timFPS.asMilliseconds()));
 
         cloFPS.restart();
+
+// END BOUCLE PRINCIPALE
     }
 
     return 0;

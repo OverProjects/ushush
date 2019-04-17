@@ -3,7 +3,7 @@
 
 class Display
 {
-private:
+protected:
     sf::Texture m_texture;
     sf::Sprite m_sprite;
 
@@ -22,12 +22,13 @@ public :
     bool init(std::string, bool);
 
     void update();
-    void update(std::string str) {m_tex.setString(str);}
+    inline void update(std::string str) {m_tex.setString(str);}
 
-    void show(sf::RenderWindow&);
+    void show(sf::RenderWindow&, bool);
 
     void setPosition(int x, int y) {m_sprite.setPosition(x, y);}
     void setTPosition(int x, int y) {m_tex.setPosition(x, y);}
+    void setSpriteScale(float x, float y) {m_sprite.setScale(x, y);}
 
     sf::Vector2i getSize() {return m_size;}
 };

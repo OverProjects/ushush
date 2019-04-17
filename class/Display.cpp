@@ -10,6 +10,7 @@ bool Display::init(std::string path)
     if (!m_texture.loadFromFile(path)) {std::cerr << "no load for " << path << std::endl;
                                         return false;}
     m_sprite.setTexture(m_texture);
+    m_sprite.setPosition(0, 0);
 
     m_size.x = m_sprite.getGlobalBounds().width;
     m_size.y = m_sprite.getGlobalBounds().height;
@@ -17,7 +18,7 @@ bool Display::init(std::string path)
     m_clo.restart();
 
     if (!m_fon.loadFromFile("GFX/font/arial.ttf"))
-        {std::cerr << "Can't load Arial" << std::endl;}
+        {std::cerr << "Can't load Arial" << std::endl; return false;}
     else
     {
         m_tex.setFont(m_fon);
@@ -25,6 +26,8 @@ bool Display::init(std::string path)
         m_tex.setCharacterSize(24);
         m_tex.setFillColor(sf::Color::Red);
     }
+
+    std::cout << path << std::endl;
 
     return true;
 }
@@ -49,8 +52,8 @@ void Display::update()
     m_tex.setString(std::to_string(m_timInt));
 }
 
-void Display::show(sf::RenderWindow &window)
+void Display::show(sf::RenderWindow &window, bool tete)
 {
     window.draw(m_sprite);
-    window.draw(m_tex);
+    if (tete) {window.draw(m_tex);}
 }
