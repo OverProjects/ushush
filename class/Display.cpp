@@ -57,3 +57,11 @@ void Display::show(sf::RenderWindow &window, bool tete)
     window.draw(m_sprite);
     if (tete) {window.draw(m_tex);}
 }
+
+void Display::setSpriteScale(int x, int y, sf::RenderWindow& window)
+{
+    m_sprite.setScale((window.getSize().x / x) / m_sprite.getLocalBounds().height,
+                       (window.getSize().y / y) / m_sprite.getLocalBounds().width);
+    std::cout << (window.getSize().x / x) / m_sprite.getLocalBounds().height << " | " <<
+    (window.getSize().y / y) / m_sprite.getLocalBounds().width << std:: endl;
+}

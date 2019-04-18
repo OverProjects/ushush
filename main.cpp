@@ -34,8 +34,8 @@ int main()
 
     //test
     Mov perso(window);
-    perso.init("GFX/renard.jpg");
-    perso.setSpriteScale(0.5,0.5);
+    perso.init("GFX/renard.png");
+    perso.setSpriteScale(5, 3, window);
     perso.setPosition(window.getSize().x / 2, window.getSize().y / 2);
     //end test
 
