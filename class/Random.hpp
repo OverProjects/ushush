@@ -4,9 +4,11 @@
 class Randoma
 {
 public :
+    Randoma();
     int genRand(int, int);
 
 private :
+
 
 };
 

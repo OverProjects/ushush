@@ -17,9 +17,9 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(didi.getSize().x, didi.getSize().y),
                             "Le debut du commencement");
-    int nbshape{250};
-    sf::CircleShape shape[nbshape];
-    sf::Vector2i sPos;
+    int nbshape{1000}; //max 4000 150m
+
+    sf::VertexArray stars(sf::Points, nbshape);
 
     sf::Clock cloFPS;
     sf::Time timFPS;
@@ -38,14 +38,11 @@ int main()
     perso.setSpriteScale(5, 3, window);
     perso.setPosition(window.getSize().x / 2, window.getSize().y / 2);
     //end test
-
     for (int i = 0; i < nbshape; i++)
     {
-        shape[i].setFillColor(sf::Color::White);
-        shape[i].setRadius(1);
-        shape[i].setPosition(rdd.genRand(0, window.getSize().x), rdd.genRand(0, window.getSize().y));
-        //shape[i].setPosition(window.getSize().x / 2, window.getSize().y / 2);
+        stars[i].position = sf::Vector2f(rdd.genRand(0, window.getSize().x), rdd.genRand(0, window.getSize().y));
     }
+
 // END INITIALISATION
 /////////////////////////////////////////////////////////////////////////////////////////////
 // BOUCLE PRINCIPALE
@@ -73,28 +70,23 @@ int main()
         //end test
 
         didi.show(window, 1);
-        perso.show(window, 0);
+        //perso.show(window, 0);
         diFPS.show(window, 1);
 
         for (int i = 0; i < nbshape; i++)
         {
-            sPos.x = shape[i].getPosition().x - rdd.genRand(0, 1) + rdd.genRand(0, 1);
-            sPos.y = shape[i].getPosition().y - rdd.genRand(0 ,1) + rdd.genRand(0, 1);
-
-            if (sPos.x > window.getSize().x) {sPos.x = window.getSize().x;}
-            else if (sPos.x < 0) {sPos.x = 0;}
-            if (sPos.y > window.getSize().y) {sPos.y = window.getSize().y;}
-            else if (sPos.y < 0) {sPos.y = 0;}
-
-            shape[i].setPosition(sPos.x, sPos.y);
-            window.draw(shape[i]);
+            stars[i].position = sf::Vector2f(stars[i].position.x - rdd.genRand(0, 1) + rdd.genRand(0, 1),
+                                           stars[i].position.y - rdd.genRand(0, 1) + rdd.genRand(0, 1));
+            //stars[i].position = sf::Vector2f(stars[i].position.x - 1, stars[i].position.y - 1);
         }
+        window.draw(stars);
+
         window.display();
 
         timFPS = cloFPS.getElapsedTime();
-        while(timFPS.asMilliseconds() < 50)
+        while(timFPS.asMilliseconds() < 10)
             {timFPS = cloFPS.getElapsedTime();}
-        if (timFPS.asMilliseconds() > 100) {std::cout << "oula" << std::endl;}
+        if (timFPS.asMilliseconds() > 300) {std::cout << "oula" << std::endl;}
         diFPS.update(std::to_string(timFPS.asMilliseconds()));
 
         cloFPS.restart();

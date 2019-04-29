@@ -22,7 +22,7 @@ public :
     bool init(std::string, bool);
 
     void update();
-    virtual void update(std::string str) {m_tex.setString(str); std::cout << "'im here" << std::endl;}
+    virtual void update(std::string str) {m_tex.setString(str);}
 
     void show(sf::RenderWindow&, bool);
 

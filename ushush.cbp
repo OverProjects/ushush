@@ -37,6 +37,8 @@
 		<Unit filename="class/Input.hpp" />
 		<Unit filename="class/Move.cpp" />
 		<Unit filename="class/Move.hpp" />
+		<Unit filename="class/Random.cpp" />
+		<Unit filename="class/Random.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
