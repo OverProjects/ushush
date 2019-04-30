@@ -27,7 +27,7 @@ bool Display::init(std::string path)
         m_tex.setFillColor(sf::Color::Red);
     }
 
-    std::cout << path << std::endl;
+    //std::cout << path << std::endl;
 
     return true;
 }
@@ -39,7 +39,7 @@ bool Display::init(std::string str, bool texte)
     else
     {
         m_tex.setFont(m_fon);
-        m_tex.setString("manger");
+        m_tex.setString(str);
         m_tex.setCharacterSize(24);
         m_tex.setFillColor(sf::Color::Red);
     }
@@ -60,8 +60,6 @@ void Display::show(sf::RenderWindow &window, bool tete)
 
 void Display::setSpriteScale(int x, int y, sf::RenderWindow& window)
 {
-    m_sprite.setScale((window.getSize().x / x) / m_sprite.getLocalBounds().height,
-                       (window.getSize().y / y) / m_sprite.getLocalBounds().width);
-    std::cout << (window.getSize().x / x) / m_sprite.getLocalBounds().height << " | " <<
-    (window.getSize().y / y) / m_sprite.getLocalBounds().width << std:: endl;
+    m_sprite.setScale((window.getSize().x / x) / m_sprite.getLocalBounds().width,
+                       (window.getSize().y / y) / m_sprite.getLocalBounds().height);
 }

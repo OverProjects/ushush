@@ -14,7 +14,7 @@ protected :
 
 public :
     Mov(sf::RenderWindow& window);
-    void update(std::string str);
+    virtual void update(std::string str);
 };
 
 #endif // DEF_MOV

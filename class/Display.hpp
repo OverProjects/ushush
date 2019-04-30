@@ -22,13 +22,15 @@ public :
     bool init(std::string, bool);
 
     void update();
-    virtual void update(std::string str) {m_tex.setString(str);}
+    void update(std::string str) {m_tex.setString(str);}
 
     void show(sf::RenderWindow&, bool);
 
     void setPosition(int x, int y) {m_sprite.setPosition(x, y);}
     void setTPosition(int x, int y) {m_tex.setPosition(x, y);}
     void setSpriteScale(int, int, sf::RenderWindow&);
+
+    sf::Text getTex() {return m_tex;}
 
     sf::Vector2i getSize() {return m_size;}
 };
