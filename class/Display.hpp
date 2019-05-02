@@ -24,7 +24,7 @@ public :
     void update();
     void update(std::string str) {m_tex.setString(str);}
 
-    void show(sf::RenderWindow&, bool);
+    void show(sf::RenderWindow&, bool, bool);
 
     void setPosition(int x, int y) {m_sprite.setPosition(x, y);}
     void setTPosition(int x, int y) {m_tex.setPosition(x, y);}

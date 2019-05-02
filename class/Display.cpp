@@ -52,9 +52,9 @@ void Display::update()
     m_tex.setString(std::to_string(m_timInt));
 }
 
-void Display::show(sf::RenderWindow &window, bool tete)
+void Display::show(sf::RenderWindow &window, bool sprite, bool tete)
 {
-    window.draw(m_sprite);
+    if (sprite) {window.draw(m_sprite);}
     if (tete) {window.draw(m_tex);}
 }
 

@@ -37,7 +37,7 @@ int main()
     background.init("GFX/back/bg1");
     background.setSpriteScale(1, 1, window);
 
-    diTime.init()
+    diTime.init("manger"); //manque un truc
 
     diFPS.init(std::to_string(timFPS.asMilliseconds()), 1);
 
@@ -79,16 +79,16 @@ int main()
         window.clear();
         // update and show
 
-        didi.update();
         rdd.update();
-            //TEST
+
+            //test
         perso.update("ligne");
-        perso.show(window, 0);
+        perso.show(window, 1, 0);
             //end test
 
-        didi.show(window, 1);
+        background.show(window, 1, 0);
         diFPS.setTPosition(window.getSize().x - diFPS.getTex().getLocalBounds().width - 5, 0);
-        diFPS.show(window, 1);
+        diFPS.show(window, 0, 1);
 
         for (int i = 0; i < nbshape; i++)
         {
