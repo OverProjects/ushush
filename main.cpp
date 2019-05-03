@@ -34,12 +34,14 @@ int main()
 
     // init classes
 
-    background.init("GFX/back/bg1");
+    background.init("GFX/back/bg1", 0);
     background.setSpriteScale(1, 1, window);
 
-    diTime.init("manger"); //manque un truc
+    diTime.init("manger", 1); //manque un truc
+    diTime.setTPosition(0, 0);
 
-    diFPS.init(std::to_string(timFPS.asMilliseconds()), 1);
+    diFPS.init("manger2", 1);
+    diFPS.setTPosition(0, 100);
 
     // end init classes
 
@@ -52,7 +54,7 @@ int main()
 
     // test
     Mov perso(window);
-    perso.init("GFX/renard.png");
+    //perso.init("GFX/renard.png");
     perso.setSpriteScale(5, 3, window);
     perso.setPosition(window.getSize().x / 2, window.getSize().y / 2);
     // end test
@@ -81,14 +83,19 @@ int main()
 
         rdd.update();
 
+        diTime.update(3);
+        diFPS.update(3);
+        background.update(0);
+
             //test
-        perso.update("ligne");
-        perso.show(window, 1, 0);
+        //perso.update("ligne");
+        //perso.show(window);
             //end test
 
-        background.show(window, 1, 0);
         diFPS.setTPosition(window.getSize().x - diFPS.getTex().getLocalBounds().width - 5, 0);
-        diFPS.show(window, 0, 1);
+
+        background.show(window);
+        diTime.show(window);
 
         for (int i = 0; i < nbshape; i++)
         {
@@ -108,12 +115,12 @@ int main()
 
         timFPS = cloFPS.getElapsedTime();
 
-        while(timFPS.asMilliseconds() < 50)
-            {timFPS = cloFPS.getElapsedTime();}
-        if (timFPS.asMilliseconds() > 300) {std::cout << "oula" << std::endl;}
+        while(diFPS.getTim().asMilliseconds() < 50)
+            {diFPS.update(3);}
+        if (diFPS.getTim().asMilliseconds() > 300) {std::cout << "oula" << std::endl;}
 
-        diFPS.update(std::to_string(timFPS.asMilliseconds()));
-        cloFPS.restart();
+        diFPS.show(window);
+        diFPS.setCloRestart();
 
         // end gestion fps
 
