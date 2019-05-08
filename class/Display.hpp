@@ -22,7 +22,7 @@ protected:
 public :
     bool init(std::string, int);
 
-    void update(int);
+    virtual void update(int);
 
     void show(sf::RenderWindow&);
 

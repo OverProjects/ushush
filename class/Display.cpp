@@ -37,9 +37,15 @@ bool Display::init(std::string str, int what)
 void Display::update(int what)
 {
     m_tim = m_clo.getElapsedTime();
-    m_timInt = m_tim.asSeconds();
+    m_timInt = m_tim.asMilliseconds();
 
-    if (what == 3) // Texte time
+    if (what == 3) // Texte time in seconds
+    {
+        m_timInt = m_tim.asSeconds();
+        m_tex.setString(std::to_string(m_timInt));
+    }
+
+    if (what == 4) // Texte time in ms
     {
         m_tex.setString(std::to_string(m_timInt));
     }
