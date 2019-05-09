@@ -33,33 +33,27 @@ void Input::handleInputs(sf::RenderWindow &window)
                 m_mouse.mouseY = event.mouseMove.y; break;
 
             case sf::Event::KeyPressed :
-                event.key.code == sf::Keyboard::Left ? m_button.leftBut = true : m_button.leftBut = false;
-                event.key.code == sf::Keyboard::Right ? m_button.rightBut = true : m_button.rightBut = false;
-                event.key.code == sf::Keyboard::Up ? m_button.upBut = true : m_button.upBut = false;
-                event.key.code == sf::Keyboard::Down ? m_button.downBut = true : m_button.downBut = false;
-                event.key.code == sf::Keyboard::A ? m_button.aBut = true : m_button.aBut = false;
-                event.key.code == sf::Keyboard::Z ? m_button.bBut = true : m_button.bBut = false;
-                event.key.code == sf::Keyboard::Q ? m_button.xBut = true : m_button.xBut = false;
-                event.key.code == sf::Keyboard::S ? m_button.yBut = true : m_button.yBut = false;
-                event.key.code == sf::Keyboard::E ? m_button.rBut = true : m_button.rBut = false;
-                event.key.code == sf::Keyboard::D ? m_button.lBut = true : m_button.lBut = false;
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Escape : window.close(); break;
 
-                if (event.key.code == sf::Keyboard::Escape) {window.close();}
-
+                    case sf::Keyboard::Left : m_button.leftBut = true; std::cout << "j'y suis"; break;
+                    case sf::Keyboard::Right : m_button.rightBut = true; break;
+                    case sf::Keyboard::Up : m_button.upBut = true; break;
+                    case sf::Keyboard::Down : m_button.downBut = true; break;
+                    default : break;
+                }
                 break;
 
             case sf::Event::KeyReleased :
-                event.key.code == sf::Keyboard::Left ? m_button.leftBut = true : m_button.leftBut = false;
-                event.key.code == sf::Keyboard::Right ? m_button.rightBut = true : m_button.rightBut = false;
-                event.key.code == sf::Keyboard::Up ? m_button.upBut = true : m_button.upBut = false;
-                event.key.code == sf::Keyboard::Down ? m_button.downBut = true : m_button.downBut = false;
-                event.key.code == sf::Keyboard::A ? m_button.aBut = true : m_button.aBut = false;
-                event.key.code == sf::Keyboard::Z ? m_button.bBut = true : m_button.bBut = false;
-                event.key.code == sf::Keyboard::Q ? m_button.xBut = true : m_button.xBut = false;
-                event.key.code == sf::Keyboard::S ? m_button.yBut = true : m_button.yBut = false;
-                event.key.code == sf::Keyboard::E ? m_button.rBut = true : m_button.rBut = false;
-                event.key.code == sf::Keyboard::D ? m_button.lBut = true : m_button.lBut = false;
-
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Left : m_button.leftBut = false; break;
+                    case sf::Keyboard::Right : m_button.rightBut = false; break;
+                    case sf::Keyboard::Up : m_button.upBut = false; break;
+                    case sf::Keyboard::Down : m_button.downBut = false; break;
+                    default : break;
+                }
                 break;
 
             default : break;

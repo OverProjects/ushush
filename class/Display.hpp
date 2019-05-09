@@ -24,7 +24,7 @@ public :
 
     virtual void update(int);
 
-    void show(sf::RenderWindow&);
+    virtual void show(sf::RenderWindow&);
 
     // SetText
     void setTString(std::string str) {m_tex.setString(str);}

@@ -23,6 +23,8 @@ int lauchShoot()
 
     Randoma rdd;
 
+    Input in;
+
     Display background;
     Display diTime;
     Display diFPS;
@@ -42,7 +44,7 @@ int lauchShoot()
     diFPS.setTPosition(0, 100);
 
     pers.init("GFX/renard.jpg", 0);
-    pers.setSpriteScale(10, 5, window);
+    pers.setSpriteScale(12, 3, window);
     pers.setPosition(window.getSize().x / 2, window.getSize().y / 2);
 
     // end init classes
@@ -58,10 +60,11 @@ int lauchShoot()
 
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             {
                 window.close();
             }
+            */
 
         }
 
@@ -70,11 +73,13 @@ int lauchShoot()
 
         rdd.update();
 
+        in.handleInputs(window);
+
         diTime.update(3);
         diFPS.update(4);
         background.update(0);
 
-        pers.update(0);
+        pers.update(in);
 
         background.show(window);
         pers.show(window);

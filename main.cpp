@@ -17,7 +17,8 @@ int main()
 
     while (isWorking)
     {
-        std::cout << std::endl << "Hello to this amazing world of progress\nPlease select your amusement by typing the number decided\n" <<
+        std::cout << std::endl << "Hello to this amazing world of progress\
+        \nPlease select your amusement by typing the number decided\n" <<
         "0. Quit\n1. Stars\n2. Mc Gonagal" << std::endl;
 
         std::cin >> decision;
@@ -30,4 +31,5 @@ int main()
             default : break;
         }
     }
+    std::cout << "\nSuccess\n";
 }
