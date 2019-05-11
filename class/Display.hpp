@@ -4,6 +4,8 @@
 class Display
 {
 protected:
+    sf::Vector2i m_ScreenSize;
+
     sf::Texture m_texture;
     sf::Sprite m_sprite;
 
@@ -20,7 +22,7 @@ protected:
     int m_what;
 
 public :
-    bool init(std::string, int);
+    virtual bool init(std::string, int, sf::RenderWindow&);
 
     virtual void update(int);
 
@@ -36,6 +38,8 @@ public :
     void setPosition(int x, int y) {m_sprite.setPosition(x, y);}
     void setSpriteScale(int, int, sf::RenderWindow&);
 
+    void setScreenSize(int x, int y) {m_ScreenSize.x = x; m_ScreenSize.y = y;}
+
     void setCloRestart() {m_clo.restart();}
 
     sf::Text getTex() {return m_tex;}
@@ -43,6 +47,7 @@ public :
     int getTimeInt() {return m_timInt;}
 
     sf::Vector2i getSize() {return m_size;}
+    sf::Vector2f getPosition() {return m_sprite.getPosition();}
 };
 
 #endif

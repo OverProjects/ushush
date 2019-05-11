@@ -5,11 +5,14 @@
 
 #include "Display.hpp"
 
-bool Display::init(std::string str, int what)
+bool Display::init(std::string str, int what, sf::RenderWindow &window)
 {
     m_clo.restart();
     m_tim = m_clo.getElapsedTime();
     m_timInt = m_tim.asSeconds();
+
+    m_ScreenSize.x = window.getSize().x;
+    m_ScreenSize.y = window.getSize().y;
 
     if (!what) // Sprite
     {
@@ -32,6 +35,7 @@ bool Display::init(std::string str, int what)
         m_tex.setFillColor(sf::Color::Red);
         m_what = what;
     }
+    return true;
 }
 
 void Display::update(int what)

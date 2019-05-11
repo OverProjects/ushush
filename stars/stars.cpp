@@ -31,13 +31,13 @@ void launchStars()
 
     // init classes
 
-    background.init("GFX/back/bg1", 0);
+    background.init("GFX/back/bg1", 0, window);
     background.setSpriteScale(1, 1, window);
 
-    diTime.init("manger", 1);
+    diTime.init("manger", 1, window);
     diTime.setTPosition(0, 0);
 
-    diFPS.init("manger2", 1);
+    diFPS.init("manger2", 1, window);
     diFPS.setTPosition(0, 100);
 
     // end init classes
