@@ -19,7 +19,7 @@ int lauchShoot()
     if (!icon.loadFromFile("GFX/icone.png")) {std::cerr << "No load for icone.png" << std::endl;}
     else {window.setIcon(225,225,icon.getPixelsPtr());}
 
-    window.setMouseCursorVisible(false);
+    //window.setMouseCursorVisible(false);
 
     // end init window
 
@@ -32,6 +32,8 @@ int lauchShoot()
     Display background;
     Display diTime;
     Display diFPS;
+
+    Display dileTruc;
 
     Perso pers;
 
@@ -54,6 +56,9 @@ int lauchShoot()
     pers.init("GFX/shout/perso.png", 0, window);
     pers.setSpriteScale(20, 6, window);
     pers.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+
+    dileTruc.init("manger3", 1, window);
+    dileTruc.setTPosition(100, 100);
 
     // end init classes
 // END INITIALISATION
@@ -84,13 +89,15 @@ int lauchShoot()
 
         diTime.update(3);
         diFPS.update(4);
+        dileTruc.setTString(std::to_string(pers.m_toMouse.x));
         background.update(0);
 
-        pers.update();
+        pers.update(window);
 
         background.show(window);
         pers.show(window);
         diTime.show(window);
+        dileTruc.show(window); // la
         mous.show(window);
 
         // end update and show
