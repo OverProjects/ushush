@@ -21,6 +21,8 @@ protected:
 
     int m_what;
 
+    sf::VertexArray lin;
+
 public :
     virtual bool init(std::string, int, sf::RenderWindow&);
 

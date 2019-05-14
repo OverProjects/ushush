@@ -23,6 +23,9 @@ bool Display::init(std::string str, int what, sf::RenderWindow &window)
         m_size.x = m_sprite.getLocalBounds().width;
         m_size.y = m_sprite.getLocalBounds().height;
         m_what = what;
+
+        lin.resize(4);
+        lin.setPrimitiveType(sf::LinesStrip);
     }
 
     else if (what) // Texte

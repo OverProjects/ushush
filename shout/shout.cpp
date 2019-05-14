@@ -25,6 +25,7 @@ int lauchShoot()
 
     // construct classes
 
+
     Randoma rdd;
 
     Mouse mous;
@@ -55,7 +56,7 @@ int lauchShoot()
     diFPS.setTPosition(0, 100);
 
     pers.init("GFX/shout/perso.png", 0, window);
-    pers.setSpriteScale(20, 6, window);
+    pers.setSpriteScale(20, 20, window);
     pers.setPosition(window.getSize().x / 2, window.getSize().y / 2);
 
     dileTruc.init("manger3", 1, window);
@@ -92,13 +93,13 @@ int lauchShoot()
 
         diTime.update(3);
         diFPS.update(4);
-        dileTruc.setTString(std::to_string(pers.m_omerde.x));
-        dileTruc2.setTString(std::to_string(pers.m_omerde.y));
+        dileTruc.setTString(std::to_string(pers.m_toMouse.x));
+        dileTruc2.setTString(std::to_string(pers.m_toMouse.y));
         background.update(0);
 
         pers.update(window);
 
-        background.show(window);
+        //background.show(window);
         pers.show(window);
         diTime.show(window);
         dileTruc.show(window); // la

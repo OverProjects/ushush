@@ -12,10 +12,6 @@ private :
     sf::Vector2i m_vel;
     sf::Vector2i m_latMove;
 
-
-
-
-
     void colli()
     {
         if (m_sprite.getPosition().x + (m_latMove.x * m_vel.x) < 0) // à gauche
@@ -47,13 +43,23 @@ public :
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {m_vel.y++;}
         colli();
 
-        m_sprite.setOrigin((m_sprite.getGlobalBounds().width / 2) - 3,(m_sprite.getGlobalBounds().height / 2) + 36);
+        lin[0].position = sf::Vector2f (m_sprite.getGlobalBounds().left, m_sprite.getGlobalBounds().top);
+        lin[1].position = sf::Vector2f (m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width, m_sprite.getGlobalBounds().top);
+        lin[2].position = sf::Vector2f (m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width, m_sprite.getGlobalBounds().height + m_sprite.getGlobalBounds().top);
+        lin[3].position = sf::Vector2f (m_sprite.getGlobalBounds().left, m_sprite.getGlobalBounds().height + m_sprite.getGlobalBounds().top);
+
+        for (int i = 0; i < 4; i++)
+        {
+            lin[i].color = sf::Color::Blue;
+        }
+
+        m_sprite.setOrigin((m_sprite.getGlobalBounds().width / 2),(m_sprite.getGlobalBounds().height / 2));
 
         m_toUp.x = 5;
         m_toUp.y = 0;
 
-        m_toMouse.x = (sf::Mouse::getPosition(window).x - (m_sprite.getGlobalBounds().left + (m_sprite.getGlobalBounds().width / 2) - 3));
-        m_toMouse.y = (sf::Mouse::getPosition(window).y - (m_sprite.getGlobalBounds().top + (m_sprite.getGlobalBounds().height / 2) + 36));
+        m_toMouse.x = (sf::Mouse::getPosition(window).x - (m_sprite.getGlobalBounds().left + (m_sprite.getGlobalBounds().width / 2)));
+        m_toMouse.y = (sf::Mouse::getPosition(window).y - (m_sprite.getGlobalBounds().top + (m_sprite.getGlobalBounds().height / 2)));
 
         m_omerde.x = (m_toMouse.x / sqrt((m_toMouse.x * m_toMouse.x) + (m_toMouse.y * m_toMouse.y)));
         m_omerde.y = (m_toMouse.y / sqrt((m_toMouse.x * m_toMouse.x) + (m_toMouse.y * m_toMouse.y)));
@@ -80,12 +86,17 @@ public :
          */
     }
 
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        //target.draw(lin, 4, sf::LinesStrip);
+    }
     void show(sf::RenderWindow &window)
     {
         m_latMove.x = window.getSize().x / 60; m_latMove.y = window.getSize().y / 40;
         //m_sprite.setPosition(0,0);
         m_sprite.setPosition(m_sprite.getPosition().x + (m_vel.x * m_latMove.x), m_sprite.getPosition().y + (m_vel.y * m_latMove.y));
         window.draw(m_sprite);
+
     }
 
 };
