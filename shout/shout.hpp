@@ -14,7 +14,7 @@ private :
 
 
 
-    sf::Vector2i m_omerde;
+
 
     void colli()
     {
@@ -34,6 +34,7 @@ private :
 public :
     sf::Vector2i m_toMouse;
     sf::Vector2i m_toUp;
+    sf::Vector2f m_omerde;
 
     void sayYes() {std::cout << "Yes" << std::endl;}
 
@@ -46,27 +47,28 @@ public :
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {m_vel.y++;}
         colli();
 
-        m_sprite.setOrigin(150,200);
+        m_sprite.setOrigin((m_sprite.getGlobalBounds().width / 2) - 3,(m_sprite.getGlobalBounds().height / 2) + 36);
 
         m_toUp.x = 5;
         m_toUp.y = 0;
 
-        if (m_sprite.getGlobalBounds().left + (m_sprite.getGlobalBounds().width / 2) < sf::Mouse::getPosition(window).x)
-            {m_toMouse.x = sf::Mouse::getPosition(window).x - m_sprite.getGlobalBounds().left + (m_sprite.getGlobalBounds().width / 2);}
-        else {m_toMouse.x = m_sprite.getGlobalBounds().left + (m_sprite.getGlobalBounds().width / 2) - sf::Mouse::getPosition(window).x;}
+        m_toMouse.x = (sf::Mouse::getPosition(window).x - (m_sprite.getGlobalBounds().left + (m_sprite.getGlobalBounds().width / 2) - 3));
+        m_toMouse.y = (sf::Mouse::getPosition(window).y - (m_sprite.getGlobalBounds().top + (m_sprite.getGlobalBounds().height / 2) + 36));
 
-        if (m_sprite.getGlobalBounds().top + (m_sprite.getGlobalBounds().height / 2) < sf::Mouse::getPosition(window).y)
-            {m_toMouse.y = sf::Mouse::getPosition(window).y - m_sprite.getGlobalBounds().top + (m_sprite.getGlobalBounds().height / 2);}
-        else {m_toMouse.y = m_sprite.getGlobalBounds().top + (m_sprite.getGlobalBounds().height / 2) - sf::Mouse::getPosition(window).y;}
+        m_omerde.x = (m_toMouse.x / sqrt((m_toMouse.x * m_toMouse.x) + (m_toMouse.y * m_toMouse.y)));
+        m_omerde.y = (m_toMouse.y / sqrt((m_toMouse.x * m_toMouse.x) + (m_toMouse.y * m_toMouse.y)));
 
-        m_omerde.x = 360 - acos((m_toUp.x * m_toMouse.x + m_toUp.y * m_toMouse.y) /
+        m_sprite.setRotation(abs(m_omerde.x * 360)); // ca marche pas
+
+        /*
+        m_omerde.x = 360 - ((m_toUp.x * m_toMouse.x + m_toUp.y * m_toMouse.y) /
          sqrt(m_toUp.x * m_toUp.x + m_toUp.y * m_toUp.y) * sqrt(m_toMouse.x * m_toMouse.x + m_toMouse.y * m_toMouse.y));
 
-        m_omerde.y = acos((m_toUp.x * m_toMouse.x + m_toUp.y * m_toMouse.y) /
+        m_omerde.y = ((m_toUp.x * m_toMouse.x + m_toUp.y * m_toMouse.y) /
          sqrt(m_toUp.x * m_toUp.x + m_toUp.y * m_toUp.y) * sqrt(m_toMouse.x * m_toMouse.x + m_toMouse.y * m_toMouse.y));
-
+        */
         //std::cout << m_omerde .x<< " | " << m_omerde.y << std::endl;
-        std::cout << m_toMouse.x<< " | " << m_toMouse.y << std::endl;
+        //std::cout << m_toMouse.x<< " | " << m_toMouse.y << std::endl;
         /*
 
         if (sf::Mouse::getPosition().x < m_sprite.getPosition().x)

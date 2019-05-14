@@ -34,6 +34,7 @@ int lauchShoot()
     Display diFPS;
 
     Display dileTruc;
+    Display dileTruc2;
 
     Perso pers;
 
@@ -58,7 +59,9 @@ int lauchShoot()
     pers.setPosition(window.getSize().x / 2, window.getSize().y / 2);
 
     dileTruc.init("manger3", 1, window);
+    dileTruc2.init("manger3", 1, window);
     dileTruc.setTPosition(100, 100);
+    dileTruc2.setTPosition(200, 200);
 
     // end init classes
 // END INITIALISATION
@@ -89,7 +92,8 @@ int lauchShoot()
 
         diTime.update(3);
         diFPS.update(4);
-        dileTruc.setTString(std::to_string(pers.m_toMouse.x));
+        dileTruc.setTString(std::to_string(pers.m_omerde.x));
+        dileTruc2.setTString(std::to_string(pers.m_omerde.y));
         background.update(0);
 
         pers.update(window);
@@ -98,6 +102,7 @@ int lauchShoot()
         pers.show(window);
         diTime.show(window);
         dileTruc.show(window); // la
+        dileTruc2.show(window); // la
         mous.show(window);
 
         // end update and show
