@@ -10,6 +10,7 @@ protected:
     sf::Sprite m_sprite;
 
     sf::Vector2i m_size;
+    sf::Vector2f m_scal;
 
     sf::Clock m_clo;
     sf::Time m_tim;
@@ -21,7 +22,13 @@ protected:
 
     int m_what;
 
-    sf::VertexArray lin;
+    sf::VertexArray m_cont;
+
+    sf::CircleShape m_cent;
+
+    bool m_showCont;
+    bool m_showCent;
+    bool m_showSpri;
 
 public :
     virtual bool init(std::string, int, sf::RenderWindow&);
@@ -43,6 +50,8 @@ public :
     void setScreenSize(int x, int y) {m_ScreenSize.x = x; m_ScreenSize.y = y;}
 
     void setCloRestart() {m_clo.restart();}
+
+    virtual void setShow(bool, bool, bool);
 
     sf::Text getTex() {return m_tex;}
     sf::Time getTim() {return m_tim;}
