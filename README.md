@@ -1,2 +1,2 @@
 # ushush
-Only to share code
+Way to learn
