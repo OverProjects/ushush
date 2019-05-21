@@ -40,10 +40,10 @@
 		<Unit filename="class/Random.cpp" />
 		<Unit filename="class/Random.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="shout/object.cpp" />
+		<Unit filename="shout/object.hpp" />
 		<Unit filename="shout/shout.cpp" />
 		<Unit filename="shout/shout.hpp" />
-		<Unit filename="stars/stars.cpp" />
-		<Unit filename="stars/stars.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

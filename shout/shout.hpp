@@ -7,7 +7,7 @@ const float PI = 3.14159265;
 
 int lauchShoot();
 
-class Perso : public Display, public sf::Drawable
+class Perso : public Display
 {
 private :
 

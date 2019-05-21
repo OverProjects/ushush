@@ -2,16 +2,13 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-#include "class/Display.hpp"
-#include "class/Move.hpp"
-#include "class/Input.hpp"
 #include "class/Random.hpp"
 
-#include "stars/stars.hpp"
 #include "shout/shout.hpp"
 
 int main()
 {
+/*
     bool isWorking{true};
     int decision{0};
 
@@ -25,11 +22,14 @@ int main()
 
         switch (decision)
         {
-            case 1 : launchStars(); break;
+            case 1 : break;
             case 2 : lauchShoot(); break;
             case 0 : isWorking = false; break;
             default : break;
         }
     }
     std::cout << "\nSuccess\n";
+    */
+    lauchShoot();
+    return 0;
 }
