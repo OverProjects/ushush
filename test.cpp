@@ -43,3 +43,17 @@ int lauchTest()
 
     return 0;
 }
+
+sf::Vector2f colli(int x, int y, sf::RenderWindow& window)
+{
+    sf::Vector2f off;
+    off.x = x; off.y = y;
+
+    if (x < 0) {off.x = 0;}
+    else if ((unsigned)x > window.getSize().x) {off.x = window.getSize().x;}
+
+    if (y < 0) {off.y = 0;}
+    else if ((unsigned)y > window.getSize().y) {off.y = window.getSize().y;}
+
+    return off;
+}

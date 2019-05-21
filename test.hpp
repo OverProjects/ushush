@@ -4,14 +4,99 @@
 #include <cmath>
 
 const float PI = 3.14159265;
+const int nbObject = 200;
 
 int lauchTest();
+sf::Vector2f colli(int, int, sf::RenderWindow&);
+
+class Object
+{
+private :
+    sf::Clock m_clo;
+    sf::Time m_tim;
+
+    int m_leftTime;
+
+    sf::CircleShape m_object;
+
+    sf::Vector2f m_dir;
+    sf::Vector2f m_vUnitaire;
+    float m_speed;
+    float m_ratio;
+
+    bool m_showIt;
+    bool m_used;
+
+public :
+
+    Object()
+    {
+        m_clo.restart();
+        m_tim = m_clo.getElapsedTime();
+
+        m_leftTime = 0;
+        m_speed = 0;
+
+        m_object.setFillColor(sf::Color::Red);
+        m_object.setRadius(5);
+        m_object.setPosition(0, 0);
+
+        m_vUnitaire.x = 10;
+        m_vUnitaire.y = 10;
+
+        m_showIt = false;
+        m_used = false;
+    }
+
+    void init(int radius, int leftTime, sf::Vector2f dir, float speed,
+              sf::Vector2f position)
+    {
+        m_clo.restart();
+        m_tim = m_clo.getElapsedTime();
+
+        m_leftTime = leftTime;
+
+        m_dir.x = 0 - dir.x;
+        m_dir.y = 0 - dir.y;
+
+        m_speed = speed;
+
+        m_object.setFillColor(sf::Color::Red);
+        m_object.setRadius(radius);
+        m_object.setPosition(position);
+
+        m_showIt = true;
+        m_used = true;
+    }
+
+    void update(sf::RenderWindow& window)
+    {
+        m_tim = m_clo.getElapsedTime();
+        if (m_tim.asMilliseconds() > m_leftTime)
+            {m_showIt = false; m_used = false;}
+
+        m_ratio = (sqrt((m_vUnitaire.x * m_vUnitaire.x) + (m_vUnitaire.y + m_vUnitaire.y)) /
+                   sqrt((m_dir.x * m_dir.x) + (m_dir.y * m_dir.y)));
+
+        m_object.move(m_dir * m_ratio * m_speed );
+
+        //m_object.setPosition(colli(m_object.getPosition().x, m_object.getPosition().y, window));
+    }
+
+    void show(sf::RenderWindow& window)
+    {
+        if  (m_showIt) {window.draw(m_object);}
+    }
+
+    bool getUsed() {return m_used;}
+};
 
 class Perso
 {
 private :
 
     sf::Clock m_clo;
+    sf::Clock m_cloLeftMouse;
     sf::Time m_tim;
 
     sf::VertexArray m_cont;
@@ -27,6 +112,8 @@ private :
     sf::Vector2i m_mousePosition;
     sf::Vector2f m_toMouse;
 
+    Object m_object[nbObject];
+
     int m_rotat;
 
     bool m_showCont;
@@ -34,11 +121,23 @@ private :
     bool m_showCent;
     bool m_showLin;
 
+    void createObject()
+    {
+        int i{0};
+
+        while (m_object[i].getUsed()) {if (i < nbObject) {i++;};}
+
+        if (i < nbObject)
+            {m_object[i].init(5, 2000, m_toMouse , 1, m_spri.getPosition());}
+        else {std::cout << "i  = " << i << std::endl;}
+    }
+
 public :
 
     Perso();
     Perso(std::string str)
     {
+        m_cloLeftMouse.restart();
         m_clo.restart();
         m_tim = m_clo.getElapsedTime();
 
@@ -81,9 +180,16 @@ public :
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {this->setSscale(1, window);}
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {this->setSscale(0, window);}
 
+        m_tim = m_cloLeftMouse.getElapsedTime();
+        if (m_tim.asMilliseconds() > 100)
+        {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {this->createObject();}
+            m_cloLeftMouse.restart();
+        }
+
         // Ici commence la rotat
 
-        m_mousePosition = sf::Mouse::getPosition();
+        m_mousePosition = sf::Mouse::getPosition(window);
 
         m_toMouse.x = m_spri.getPosition().x - m_mousePosition.x;
         m_toMouse.y = m_spri.getPosition().y - m_mousePosition.y;
@@ -97,6 +203,8 @@ public :
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {m_spri.move(0, 10);}
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {m_spri.move(0 - 10, 0);}
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {m_spri.move(10, 0);}
+
+        m_spri.setPosition(colli(m_spri.getPosition().x, m_spri.getPosition().y, window));
 
         m_tim = m_clo.getElapsedTime();
 
@@ -116,6 +224,11 @@ public :
 
         m_shape.setPosition(m_spri.getOrigin().x + m_spri.getGlobalBounds().left,
                           m_spri.getOrigin().y + m_spri.getGlobalBounds().top);
+
+        for (int i = 0; i < nbObject; i++)
+        {
+            if (m_object[i].getUsed()) {m_object[i].update(window);}
+        }
     }
 
     void show(sf::RenderWindow& window)
@@ -124,6 +237,11 @@ public :
         if (m_showCont) {window.draw(m_cont);}
         if (m_showCent) {window.draw(m_shape);}
         window.draw(m_lin);
+
+        for (int i = 0; i < nbObject; i++)
+        {
+            if (m_object[i].getUsed()) {m_object[i].show(window);}
+        }
     }
 
     void setSscale(bool x, sf::RenderWindow& window)
@@ -141,5 +259,7 @@ public :
         m_showLin = lin;
     }
 };
+
+
 
 #endif // DEF_TEST
