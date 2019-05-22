@@ -1,115 +1,49 @@
 #include <iostream>
-#include <cmath>
 #include <SFML/Graphics.hpp>
 
-#include "../class/Display.hpp"
-#include "../class/Input.hpp"
-#include "../class/Random.hpp"
+#include "perso.hpp"
+#include "mapping.hpp"
 
-#include "shout.hpp"
-
-int lauchShoot()
+int launchUshush()
 {
-// INITIALISATION
-    // init window
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,
-                                        sf::VideoMode::getDesktopMode().height),
-                                        "Stars along the way");
-    sf::Image icon;
-    if (!icon.loadFromFile("GFX/icone.png")) {std::cerr << "No load for icone.png" << std::endl;}
-    else {window.setIcon(225,225,icon.getPixelsPtr());}
+                                          sf::VideoMode::getDesktopMode().height),
+                                          "A new brand");
 
-    //window.setMouseCursorVisible(false);
+    sf::Clock clo;
+    sf::Time tim;
 
-    // end init window
+    Perso perso("GFX/paki2.png");
+    perso.setShow(true, true, true,true);
 
-    // construct classes
+    Mapping mapping;
+    mapping.init("GFX/shout/MAP.tt", 0);
 
-
-    Randoma rdd;
-
-    Mouse mous;
-
-    Display background;
-    Display diTime;
-    Display diFPS;
-
-    Perso pers("GFX/shout/perso.png", window);
-
-    // end construct classes
-    // init classes
-
-    mous.init("GFX/shout/vise.png", window);
-    //mous.setSpriteScale(10, 10, window);
-
-
-    background.init("GFX/back/bg1", 0, window);
-    background.setSpriteScale(1, 1, window);
-
-    diTime.init("manger", 1, window);
-    diTime.setTPosition(0, 0);
-
-    diFPS.init("manger2", 1, window);
-    diFPS.setTPosition(0, 100);
-
-    pers.setSpriteScale(20, 20, window);
-    pers.setPosition(window.getSize().x / 2, window.getSize().y / 2);
-
-    // end init classes
-// END INITIALISATION
-/////////////////////////////////////////////////////////////////////////////////////////////
-// BOUCLE PRINCIPALE
-
-    while (window.isOpen())
+    while(window.isOpen())
     {
         sf::Event event;
-        while (window.pollEvent(event))
+        while(window.pollEvent(event))
         {
-
-            if (event.type == sf::Event::Closed)
-                    {window.close();}
-            if (event.type == sf::Event::Resized)
-                    {pers.setScreenSize(window.getSize().x, window.getSize().y);}
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-                {window.close();}
-
+            if(event.type == sf::Event::Closed) {window.close();}
         }
 
-        window.clear();
-        // update and show
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {window.close();}
 
-        rdd.update();
+        window.clear(sf::Color::White);
 
-        mous.update(window);
+        perso.update(window);
 
-        diTime.update(3);
-        diFPS.update(4);
-        background.update(0);
+        perso.show(window);
+        mapping.show(window);
 
-        pers.update(window);
+        do {
+            tim = clo.getElapsedTime();
+        }   while (tim.asMilliseconds() < 25);
 
-        //background.show(window);
-        pers.show(window);
-        diTime.show(window);
-        mous.show(window);
-
-        // end update and show
-
-        // gestion fps
-
-        while(diFPS.getTim().asMilliseconds() < 25)
-            {diFPS.update(4);}
-        if (diFPS.getTim().asMilliseconds() > 300) {std::cout << "oula" << std::endl;}
-
-        diFPS.setTPosition(window.getSize().x - diFPS.getTex().getLocalBounds().width - 5, 0);
-        diFPS.show(window);
-        diFPS.setCloRestart();
-
-        // end gestion fps
+        clo.restart();
 
         window.display();
     }
-// END BOUCLE PRINCIPALE
-    window.setMouseCursorVisible(true);
 
+    return 0;
 }
