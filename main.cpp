@@ -30,6 +30,6 @@ int main()
     }
     std::cout << "\nSuccess\n";
     */
-    lauchShoot();
+    launchUshush();
     return 0;
 }
