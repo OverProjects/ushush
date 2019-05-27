@@ -31,22 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="class/Display.cpp" />
-		<Unit filename="class/Display.hpp" />
-		<Unit filename="class/Input.cpp" />
-		<Unit filename="class/Input.hpp" />
-		<Unit filename="class/Move.cpp" />
-		<Unit filename="class/Move.hpp" />
 		<Unit filename="class/Random.cpp" />
 		<Unit filename="class/Random.hpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="shout/object.cpp" />
-		<Unit filename="shout/object.hpp" />
+		<Unit filename="shout/mapping.cpp" />
+		<Unit filename="shout/mapping.hpp" />
+		<Unit filename="shout/perso.cpp" />
+		<Unit filename="shout/perso.hpp" />
 		<Unit filename="shout/shout.cpp" />
 		<Unit filename="shout/shout.hpp" />
+		<Unit filename="shout/skill.cpp" />
+		<Unit filename="shout/skill.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
