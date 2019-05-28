@@ -2,6 +2,7 @@
 #define DEF_PERSO
 
 #include "skill.hpp"
+#include "mapping.hpp"
 
 const float PI = 3.14159265;
 const int nbObject = 200;
@@ -12,6 +13,15 @@ sf::Vector2f colli(int, int, sf::RenderWindow&);
 class Perso
 {
 private :
+
+    sf::Vector2f m_vel;
+    float m_modulVel;
+
+    float m_ratio;
+    float m_speed;
+
+    sf::Vector2i m_vUnit;
+    float m_modulUnit;
 
     sf::Clock m_clo;
     sf::Clock m_cloLeftMouse;
@@ -41,12 +51,14 @@ private :
 
     void createObject();
 
+    void colliMap(Mapping&);
+
 public :
 
     Perso();
     Perso(std::string str);
 
-    void update(sf::RenderWindow &window);
+    void update(sf::RenderWindow&, Mapping&);
 
     void show(sf::RenderWindow& window);
 

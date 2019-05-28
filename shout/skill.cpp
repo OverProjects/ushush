@@ -11,6 +11,7 @@ Object::Object()
 
     m_leftTime = 0;
     m_speed = 0;
+    m_ratio = 0;
 
     m_object.setFillColor(sf::Color::Red);
     m_object.setRadius(5);

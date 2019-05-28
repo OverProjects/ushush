@@ -4,6 +4,7 @@
 
 #include "perso.hpp"
 #include "skill.hpp"
+#include "mapping.hpp"
 
 sf::Vector2f colli(int x, int y, sf::RenderWindow& window)
 {
@@ -27,7 +28,7 @@ Perso::Perso(std::string str)
 
     m_tex.loadFromFile(str);
     m_spri.setTexture(m_tex);
-    m_spri.setPosition(100, 100);
+    m_spri.setPosition(500, 500);
 
     m_cont.setPrimitiveType(sf::LinesStrip);
     m_cont.resize(5);
@@ -57,10 +58,26 @@ Perso::Perso(std::string str)
     m_lin.setPrimitiveType(sf::Lines);
     m_lin.resize(2);
     m_lin[0].color = sf::Color::Green; m_lin[1].color = sf::Color::Green;
+
+    m_speed = 1;
+    m_ratio = 1;
+
+    m_vUnit.x = 5;
+    m_vUnit.y = 5;
+
+    m_modulUnit = sqrt((m_vUnit.x * m_vUnit.x) + (m_vUnit.y * m_vUnit.y));
+
+    m_vel.x = 0;
+    m_vel.y = 0;
+
+    m_modulVel = sqrt((m_vel.x * m_vel.x) + (m_vel.y * m_vel.y));
     }
 
-void Perso::update(sf::RenderWindow &window)
+void Perso::update(sf::RenderWindow &window, Mapping &ma)
 {
+    m_vel.x = 0;
+    m_vel.y = 0;
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {this->setSscale(1, window);}
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {this->setSscale(0, window);}
 
@@ -83,12 +100,26 @@ void Perso::update(sf::RenderWindow &window)
 
     // Ici fini la rotat
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {m_spri.move(0, 0 - 10);}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {m_spri.move(0, 10);}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {m_spri.move(0 - 10, 0);}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {m_spri.move(10, 0);}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {m_vel.y--;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {m_vel.y++;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {m_vel.x--;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {m_vel.x++;}
+
+    // Partie collision
 
     m_spri.setPosition(colli(m_spri.getPosition().x, m_spri.getPosition().y, window));
+    m_modulVel = sqrt((m_vel.x * m_vel.x) + (m_vel.y * m_vel.y));
+    if (m_vel.x != 0 || m_vel.y != 0) {colliMap(ma);}
+
+    // Fin collision
+
+
+
+    if (m_vel.x != 0 || m_vel.y != 0)
+    {
+        m_ratio = (m_modulUnit / m_modulVel);
+        m_spri.move(m_vel * m_ratio * m_speed);
+    }
 
     m_tim = m_clo.getElapsedTime();
 
@@ -151,5 +182,64 @@ void Perso::createObject()
 
     if (i < nbObject)
         {m_object[i].init(5, 2000, m_toMouse , 1, m_spri.getPosition());}
-    else {std::cout << "i  = " << i << std::endl;}
+    else {std::cout << "Max Objects (" << nbObject << ") = " << i << std::endl;}
+}
+
+void Perso::colliMap(Mapping& ma)
+{
+    bool coli{false};
+    m_ratio = (m_modulUnit / m_modulVel);
+
+    for (int i = 0; i < ma.getMaxBlocks(); i++)
+    {
+        if (ma.getBlock(i).left != 9999)
+        {
+            if (m_spri.getGlobalBounds().left + (m_vel.x * m_ratio * m_speed) >= ma.getBlock(i).left + ma.getBlock(i).width ||
+                m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width + (m_vel.x * m_ratio * m_speed) <= ma.getBlock(i).left ||
+                m_spri.getGlobalBounds().top + (m_vel.y * m_ratio * m_speed) >= ma.getBlock(i).top + ma.getBlock(i).height ||
+                m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height + (m_vel.y * m_ratio * m_speed) <= ma.getBlock(i).top)
+                {} // on essaye avec un déplacement unitaire
+
+            else
+            {
+                if (m_speed == 1)
+                {
+                    m_speed = 0.2; coli = true;
+
+                    if (m_spri.getGlobalBounds().left + (m_vel.x * m_ratio * m_speed) >= ma.getBlock(i).left + ma.getBlock(i).width ||
+                    m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width + (m_vel.x * m_ratio * m_speed) <= ma.getBlock(i).left ||
+                    m_spri.getGlobalBounds().top + (m_vel.y * m_ratio * m_speed) >= ma.getBlock(i).top + ma.getBlock(i).height ||
+                    m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height + (m_vel.y * m_ratio * m_speed) <= ma.getBlock(i).top)
+                    {} // avec 0.2 du déplacement unitaire
+
+                    else
+                    {
+                        if (m_spri.getGlobalBounds().left >= ma.getBlock(i).left + ma.getBlock(i).width ||
+                        m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width <= ma.getBlock(i).left ||
+                        m_spri.getGlobalBounds().top >= ma.getBlock(i).top + ma.getBlock(i).height ||
+                        m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height <= ma.getBlock(i).top)
+                        {} // on regarde si on est pas stuck in wall
+
+                        else {m_spri.setPosition(ma.getResetPos());} // dans ce cas on est stuck -> reset
+                        m_vel.x = 0; m_vel.y = 0; coli = true;
+                    }
+                }
+
+                else
+                {
+                    if (m_spri.getGlobalBounds().left >= ma.getBlock(i).left + ma.getBlock(i).width ||
+                        m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width <= ma.getBlock(i).left ||
+                        m_spri.getGlobalBounds().top >= ma.getBlock(i).top + ma.getBlock(i).height ||
+                        m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height <= ma.getBlock(i).top)
+                        {} // on regarde si on est pas stuck in wall
+
+                    else {m_spri.setPosition(ma.getResetPos());} // dans ce cas on est stuck -> reset
+
+                    m_vel.x = 0; m_vel.y = 0; coli = true;
+                }
+            }
+        }
+    }
+    if (coli) {m_speed = 0.2;}
+    else {m_speed = 1;}
 }

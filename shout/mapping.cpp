@@ -29,6 +29,9 @@ Mapping::Mapping()
 
         }
     }
+
+    m_resetPos.x = 500;
+    m_resetPos.y = 500;
 }
 
 void Mapping::init(std::string path, float level)

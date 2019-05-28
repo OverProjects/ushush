@@ -31,7 +31,7 @@ int launchUshush()
 
         window.clear(sf::Color::White);
 
-        perso.update(window);
+        perso.update(window, mapping);
 
         perso.show(window);
         mapping.show(window);
