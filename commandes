@@ -1,8 +1,8 @@
 Premier truc que je comprends pas :
-g++ -c main.cpp class/Display.cpp class/Move.cpp class/Input.cpp class/Random.cpp stars/stars.cpp shout/shout.cpp
+g++ -c main.cpp shout/mapping.cpp shout/perso.cpp shout/shout.cpp shout/skill.cpp
 
 Deuxième truc que je comprends pas (ou un peu) :
-g++ main.o Display.o Move.o Input.o Random.o stars.o shout.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+g++ main.o mapping.o perso.o shout.o skill.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
 
 Troisième truc aps trop compliqué :
 ./sfml-app
