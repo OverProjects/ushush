@@ -8,6 +8,8 @@ struct Blocks
     sf::Sprite spri;
     sf::IntRect block;
     int blockType = 0;
+    bool used = false;
+    bool display = false;
 };
 
 class Mapping
@@ -16,11 +18,13 @@ private :
 
     sf::Texture m_text[10];
 
-    sf::Vector2f m_resetPos;
-
     Blocks m_blocks[maxBlocks];
 
     sf::VertexArray m_cont[maxBlocks];
+
+    sf::Vector2i m_OPosition;
+
+    void toDefault(int);
 
 public :
     Mapping();
@@ -30,7 +34,7 @@ public :
 
     const int getMaxBlocks() {return maxBlocks;}
     sf::IntRect getBlock(int i) {return m_blocks[i].block;}
-    sf::Vector2f getResetPos() {return m_resetPos;}
+    sf::Vector2i getResetPos() {return m_OPosition;}
 };
 
 #endif // DF_MAP

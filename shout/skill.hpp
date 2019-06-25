@@ -19,6 +19,8 @@ private :
     bool m_showIt;
     bool m_used;
 
+    void toDefault();
+
 public :
 
     Object();

@@ -49,7 +49,7 @@ void Object::update(sf::RenderWindow& window)
 {
     m_tim = m_clo.getElapsedTime();
     if (m_tim.asMilliseconds() > m_leftTime)
-        {m_showIt = false; m_used = false;}
+        {this->toDefault();}
 
     m_ratio = (sqrt((m_vUnitaire.x * m_vUnitaire.x) + (m_vUnitaire.y + m_vUnitaire.y)) /
                 sqrt((m_dir.x * m_dir.x) + (m_dir.y * m_dir.y)));
@@ -59,5 +59,11 @@ void Object::update(sf::RenderWindow& window)
 
 void Object::show(sf::RenderWindow& window)
 {
-    if  (m_showIt) {window.draw(m_object);}
+    if  (m_showIt && m_used) {window.draw(m_object);}
+}
+
+void Object::toDefault()
+{
+    m_showIt = false;
+    m_used = false;
 }

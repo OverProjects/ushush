@@ -5,7 +5,7 @@
 #include "mapping.hpp"
 
 const float PI = 3.14159265;
-const int nbObject = 200;
+const int nbObject = 20;
 
 int lauchTest();
 sf::Vector2f colli(int, int, sf::RenderWindow&);
@@ -40,6 +40,7 @@ private :
     sf::Vector2i m_mousePosition;
     sf::Vector2f m_toMouse;
 
+    int m_maxObject;
     Object m_object[nbObject];
 
     bool m_showCont;

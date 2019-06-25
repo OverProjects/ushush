@@ -20,7 +20,7 @@ int launchUshush()
     ground.init("GFX/shout/background/echec.jpg");
 
     Perso perso("GFX/paki2.png", window);
-    perso.setShow(true, true, true,true);
+    perso.setShow(true, false, false, false);
 
     Mapping mapping;
     mapping.init("GFX/shout/MAP.tt", 0);

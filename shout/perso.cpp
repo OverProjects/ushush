@@ -70,6 +70,8 @@ Perso::Perso(std::string str, sf::RenderWindow& window)
     m_vel.y = 0;
 
     m_modulVel = sqrt((m_vel.x * m_vel.x) + (m_vel.y * m_vel.y));
+
+    m_maxObject = 10;
     }
 
 void Perso::update(sf::RenderWindow &window, Mapping &ma)
@@ -131,7 +133,7 @@ void Perso::update(sf::RenderWindow &window, Mapping &ma)
     m_shape.setPosition(m_spri.getOrigin().x + m_spri.getGlobalBounds().left,
                       m_spri.getOrigin().y + m_spri.getGlobalBounds().top);
 
-    for (int i = 0; i < nbObject; i++)
+    for (int i = 0; i < m_maxObject; i++)
     {
         if (m_object[i].getUsed()) {m_object[i].update(window);}
     }
@@ -144,7 +146,7 @@ void Perso::show(sf::RenderWindow& window)
     if (m_showCent) {window.draw(m_shape);}
     window.draw(m_lin);
 
-    for (int i = 0; i < nbObject; i++)
+    for (int i = 0; i < m_maxObject; i++)
     {
         if (m_object[i].getUsed()) {m_object[i].show(window);}
     }
@@ -169,11 +171,11 @@ void Perso::createObject()
 {
     int i{0};
 
-    while (m_object[i].getUsed()) {if (i < nbObject) {i++;};}
+    while (m_object[i].getUsed()) {if (i < m_maxObject) {i++;};}
 
-    if (i < nbObject)
+    if (i < m_maxObject)
         {m_object[i].init(5, 2000, m_toMouse , 1, m_spri.getPosition());}
-    else {std::cout << "Max Objects reached (" << nbObject << ") = " << i << std::endl;}
+    //else {std::cout << "Max Objects reached (" << m_maxObject << ") = " << i << std::endl;}
 }
 
 void Perso::collision(Mapping& ma, sf::RenderWindow& window)
