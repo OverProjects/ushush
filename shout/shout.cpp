@@ -3,17 +3,23 @@
 
 #include "perso.hpp"
 #include "mapping.hpp"
+#include "ground.hpp"
 
 int launchUshush()
 {
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode::getDesktopMode().width,
                                           sf::VideoMode::getDesktopMode().height),
                                           "A new brand");
+    sf::View view;
+    view.reset(sf::FloatRect(0, 0, 500, 500));
 
     sf::Clock clo;
     sf::Time tim;
 
-    Perso perso("GFX/paki2.png");
+    Ground ground;
+    ground.init("GFX/shout/background/echec.jpg");
+
+    Perso perso("GFX/paki2.png", window);
     perso.setShow(true, true, true,true);
 
     Mapping mapping;
@@ -33,6 +39,7 @@ int launchUshush()
 
         perso.update(window, mapping);
 
+        ground.showBack(window);
         perso.show(window);
         mapping.show(window);
 
@@ -42,6 +49,10 @@ int launchUshush()
 
         clo.restart();
 
+        view.reset(sf::FloatRect(perso.getSprite().getPosition().x - 400,
+                                 perso.getSprite().getPosition().y - 400,
+                                 800, 800));
+        window.setView(view);
         window.display();
     }
 

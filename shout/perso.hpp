@@ -35,14 +35,12 @@ private :
 
     sf::CircleShape m_shape;
 
-    sf::Vector2f m_scal;
+    sf::Vector2f m_originalScale;
 
     sf::Vector2i m_mousePosition;
     sf::Vector2f m_toMouse;
 
     Object m_object[nbObject];
-
-    int m_rotat;
 
     bool m_showCont;
     bool m_showSpri;
@@ -51,12 +49,12 @@ private :
 
     void createObject();
 
-    void colliMap(Mapping&);
+    void collision(Mapping&, sf::RenderWindow&);
 
 public :
 
     Perso();
-    Perso(std::string str);
+    Perso(std::string, sf::RenderWindow&);
 
     void update(sf::RenderWindow&, Mapping&);
 
@@ -65,6 +63,8 @@ public :
     void setSscale(bool x, sf::RenderWindow& window);
 
     void setShow(bool sprite, bool contour, bool center, bool lin);
+
+    sf::Sprite getSprite() {return m_spri;}
 };
 
 #endif // DEF_TEST

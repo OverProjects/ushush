@@ -20,7 +20,7 @@ sf::Vector2f colli(int x, int y, sf::RenderWindow& window)
     return off;
 }
 
-Perso::Perso(std::string str)
+Perso::Perso(std::string str, sf::RenderWindow& window)
 {
     m_cloLeftMouse.restart();
     m_clo.restart();
@@ -36,8 +36,9 @@ Perso::Perso(std::string str)
     for (int unsigned i = 0; i < m_cont.getVertexCount(); i++)
         {m_cont[i].color = sf::Color::Blue;}
 
-    m_scal.x = 1; m_scal.y = 1;
-       m_rotat = 0;
+    m_originalScale.x = (0.05 * window.getSize().y) / m_spri.getGlobalBounds().height;
+    m_originalScale.y = (0.05 * window.getSize().y) / m_spri.getGlobalBounds().height;
+    m_spri.setScale(m_originalScale);
 
     m_spri.setOrigin(m_spri.getGlobalBounds().width / 2, m_spri.getGlobalBounds().height / 2);
 
@@ -50,16 +51,14 @@ Perso::Perso(std::string str)
     m_showCent = true;
     m_showSpri = true;
 
-    m_mousePosition = sf::Mouse::getPosition();
-
-    m_toMouse.x = m_spri.getPosition().x - m_mousePosition.x;
-    m_toMouse.y = m_spri.getPosition().y - m_mousePosition.y;
+    m_toMouse.x = 0;
+    m_toMouse.y = 0;
 
     m_lin.setPrimitiveType(sf::Lines);
     m_lin.resize(2);
     m_lin[0].color = sf::Color::Green; m_lin[1].color = sf::Color::Green;
 
-    m_speed = 1;
+    m_speed = 0.9;
     m_ratio = 1;
 
     m_vUnit.x = 5;
@@ -75,9 +74,15 @@ Perso::Perso(std::string str)
 
 void Perso::update(sf::RenderWindow &window, Mapping &ma)
 {
-    m_vel.x = 0;
-    m_vel.y = 0;
+    sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+    sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
 
+    m_vel.x = 0;    m_vel.y = 0;
+
+    m_toMouse.x = m_spri.getPosition().x - worldPos.x;
+    m_toMouse.y = m_spri.getPosition().y - worldPos.y;
+
+    // <input>
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {this->setSscale(1, window);}
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {this->setSscale(0, window);}
 
@@ -88,38 +93,24 @@ void Perso::update(sf::RenderWindow &window, Mapping &ma)
         m_cloLeftMouse.restart();
     }
 
-    // Ici commence la rotat
-
-    m_mousePosition = sf::Mouse::getPosition(window);
-
-    m_toMouse.x = m_spri.getPosition().x - m_mousePosition.x;
-    m_toMouse.y = m_spri.getPosition().y - m_mousePosition.y;
-
-    m_rotat = (atan2(m_toMouse.y, m_toMouse.x)) * 180 / PI;
-    m_spri.setRotation(m_rotat);
-
-    // Ici fini la rotat
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {m_vel.y--;}
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {m_vel.y++;}
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {m_vel.x--;}
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {m_vel.x++;}
-
-    // Partie collision
-
-    m_spri.setPosition(colli(m_spri.getPosition().x, m_spri.getPosition().y, window));
+    // <\input>
+    // <rotation> on calcul l'angle puis on applique sur le perso
+    m_spri.setRotation((atan2(m_spri.getPosition().y - worldPos.y,
+                      m_spri.getPosition().x - worldPos.x)) * 180 / PI);
+    // <\rotation>
+    // <collision>
     m_modulVel = sqrt((m_vel.x * m_vel.x) + (m_vel.y * m_vel.y));
-    if (m_vel.x != 0 || m_vel.y != 0) {colliMap(ma);}
+    m_ratio = (m_modulUnit / m_modulVel);
+    collision(ma, window);
+    // <\collision>
 
-    // Fin collision
 
 
-
-    if (m_vel.x != 0 || m_vel.y != 0)
-    {
-        m_ratio = (m_modulUnit / m_modulVel);
-        m_spri.move(m_vel * m_ratio * m_speed);
-    }
+    if (m_vel.x != 0 || m_vel.y != 0) {m_spri.move(m_vel * m_ratio * m_speed);}
 
     m_tim = m_clo.getElapsedTime();
 
@@ -135,7 +126,7 @@ void Perso::update(sf::RenderWindow &window, Mapping &ma)
                                    m_spri.getGlobalBounds().top);
 
     m_lin[0].position = sf::Vector2f(m_spri.getPosition().x, m_spri.getPosition().y);
-    m_lin[1].position = sf::Vector2f(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+    m_lin[1].position = sf::Vector2f(worldPos.x, worldPos.y);
 
     m_shape.setPosition(m_spri.getOrigin().x + m_spri.getGlobalBounds().left,
                       m_spri.getOrigin().y + m_spri.getGlobalBounds().top);
@@ -182,64 +173,42 @@ void Perso::createObject()
 
     if (i < nbObject)
         {m_object[i].init(5, 2000, m_toMouse , 1, m_spri.getPosition());}
-    else {std::cout << "Max Objects (" << nbObject << ") = " << i << std::endl;}
+    else {std::cout << "Max Objects reached (" << nbObject << ") = " << i << std::endl;}
 }
 
-void Perso::colliMap(Mapping& ma)
+void Perso::collision(Mapping& ma, sf::RenderWindow& window)
 {
-    bool coli{false};
-    m_ratio = (m_modulUnit / m_modulVel);
+    // <onWindow>
+    /*
+    if (m_spri.getPosition().x - m_spri.getOrigin().x + (m_vel.x * m_ratio * m_speed)  < 0)
+        {m_vel.x = 0;}
+    if (m_spri.getPosition().x + m_spri.getOrigin().x + (m_vel.x * m_ratio * m_speed) > window.getSize().x)
+        {m_vel.x = 0;}
 
+    if (m_spri.getPosition().y - m_spri.getOrigin().y + (m_vel.y * m_ratio * m_speed) < 0)
+        {m_vel.y = 0;}
+    if (m_spri.getPosition().y + m_spri.getOrigin().y + (m_vel.y * m_ratio * m_speed) > window.getSize().y)
+        {m_vel.y = 0;}
+    // <\onWindow>
+    */
+    // <onBlocks>
     for (int i = 0; i < ma.getMaxBlocks(); i++)
     {
         if (ma.getBlock(i).left != 9999)
         {
-            if (m_spri.getGlobalBounds().left + (m_vel.x * m_ratio * m_speed) >= ma.getBlock(i).left + ma.getBlock(i).width ||
-                m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width + (m_vel.x * m_ratio * m_speed) <= ma.getBlock(i).left ||
-                m_spri.getGlobalBounds().top + (m_vel.y * m_ratio * m_speed) >= ma.getBlock(i).top + ma.getBlock(i).height ||
-                m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height + (m_vel.y * m_ratio * m_speed) <= ma.getBlock(i).top)
-                {} // on essaye avec un déplacement unitaire
+            if (m_spri.getPosition().x - m_spri.getOrigin().x + (m_vel.x * m_ratio * m_speed) < ma.getBlock(i).left + ma.getBlock(i).width &&
+                m_spri.getPosition().x + m_spri.getOrigin().x + (m_vel.x * m_ratio * m_speed) > ma.getBlock(i).left &&
+                m_spri.getPosition().y - m_spri.getOrigin().y + (0 * m_ratio * m_speed) < ma.getBlock(i).top + ma.getBlock(i).height &&
+                m_spri.getPosition().y + m_spri.getOrigin().y + (0 * m_ratio * m_speed) > ma.getBlock(i).top
+            ) {m_vel.x = 0;}
 
-            else
-            {
-                if (m_speed == 1)
-                {
-                    m_speed = 0.2; coli = true;
+            if (m_spri.getPosition().x - m_spri.getOrigin().x + (0 * m_ratio * m_speed) < ma.getBlock(i).left + ma.getBlock(i).width &&
+                m_spri.getPosition().x + m_spri.getOrigin().x + (0 * m_ratio * m_speed) > ma.getBlock(i).left &&
+                m_spri.getPosition().y - m_spri.getOrigin().y + (m_vel.y * m_ratio * m_speed) < ma.getBlock(i).top + ma.getBlock(i).height &&
+                m_spri.getPosition().y + m_spri.getOrigin().y + (m_vel.y * m_ratio * m_speed) > ma.getBlock(i).top
+            ) {m_vel.y = 0;}
 
-                    if (m_spri.getGlobalBounds().left + (m_vel.x * m_ratio * m_speed) >= ma.getBlock(i).left + ma.getBlock(i).width ||
-                    m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width + (m_vel.x * m_ratio * m_speed) <= ma.getBlock(i).left ||
-                    m_spri.getGlobalBounds().top + (m_vel.y * m_ratio * m_speed) >= ma.getBlock(i).top + ma.getBlock(i).height ||
-                    m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height + (m_vel.y * m_ratio * m_speed) <= ma.getBlock(i).top)
-                    {} // avec 0.2 du déplacement unitaire
-
-                    else
-                    {
-                        if (m_spri.getGlobalBounds().left >= ma.getBlock(i).left + ma.getBlock(i).width ||
-                        m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width <= ma.getBlock(i).left ||
-                        m_spri.getGlobalBounds().top >= ma.getBlock(i).top + ma.getBlock(i).height ||
-                        m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height <= ma.getBlock(i).top)
-                        {} // on regarde si on est pas stuck in wall
-
-                        else {m_spri.setPosition(ma.getResetPos());} // dans ce cas on est stuck -> reset
-                        m_vel.x = 0; m_vel.y = 0; coli = true;
-                    }
-                }
-
-                else
-                {
-                    if (m_spri.getGlobalBounds().left >= ma.getBlock(i).left + ma.getBlock(i).width ||
-                        m_spri.getGlobalBounds().left + m_spri.getGlobalBounds().width <= ma.getBlock(i).left ||
-                        m_spri.getGlobalBounds().top >= ma.getBlock(i).top + ma.getBlock(i).height ||
-                        m_spri.getGlobalBounds().top + m_spri.getGlobalBounds().height <= ma.getBlock(i).top)
-                        {} // on regarde si on est pas stuck in wall
-
-                    else {m_spri.setPosition(ma.getResetPos());} // dans ce cas on est stuck -> reset
-
-                    m_vel.x = 0; m_vel.y = 0; coli = true;
-                }
-            }
         }
     }
-    if (coli) {m_speed = 0.2;}
-    else {m_speed = 1;}
+    // <\onBlocks>
 }
